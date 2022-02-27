@@ -17,7 +17,27 @@ class AuthController < ApplicationController
         end
     end
 
+    def login
+        raise AuthenticationError unless user.authenticate(params.require(:password))
+        token = AuthenticationTokenService.call(user.id)
+
+        render json: {token: token}, status: :created
+    end
+
+    def logout
+    end
+
     private
+
+    def user
+        @user ||= User.find_by(username: params.require(:username)) # Memorized value "||="
+    rescue ActiveRecord::RecordNotFound
+        render status: :unauthorized
+    end
+
+    def handle_unauthenticated(e)
+        render json: { error: e.message }, status: :unauthorized
+    end
 
     def parameter_missing(e)
         render json: { error: e.message }, status: :unprocessable_entity
