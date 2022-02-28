@@ -28,7 +28,7 @@ class TodosController < ApplicationController
         todo = Todo.where(id: params.require(:id), user_id: $user_id)
 
         if todo.count != 0 
-          render json: {todo: todo[0], items: Item.where(todo_id: params.require(:id))}
+          render json: {todo: todo[0], items: Item.where(todo_id: params.require(:id))}, status: :ok
         else
           head :not_found
         end

@@ -9,8 +9,7 @@ describe "Items API", type: :request do
   describe "GET todo/:id/items" do
     it 'returns a todo item' do
       get '/todos/1/items', params: {
-        item_id: item.id,
-        id: todo.id
+        item_id: item.id
       },
       headers: {"Authorization" => "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.YvpeoTwNNC78GlPrVKCGbqvtjFDl_kTBcGjbY_gaQxA"}
 
@@ -22,7 +21,6 @@ describe "Items API", type: :request do
     it 'updates a todo item' do
       put '/todos/1/items', params: {
         item_id: item.id,
-        id: todo.id,
         item: {
           content: "an updated task",
           status: true
@@ -37,8 +35,7 @@ describe "Items API", type: :request do
   describe "DELETE todo/:id/items" do
     it 'delete todo item' do 
       delete '/todos/1/items', params: {
-        item_id: item.id,
-        id: todo.id
+        item_id: item.id
       },
       headers: {"Authorization" => "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.YvpeoTwNNC78GlPrVKCGbqvtjFDl_kTBcGjbY_gaQxA"}
 
