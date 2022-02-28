@@ -14,9 +14,29 @@ class TodoController < ApplicationController
       render json: todos
     end
 
-      
-    private 
+    def create
+        todo = Todo.new(todo_params.merge(user_id: $user_id))
     
+        if todo.save
+          render json: todo, status: :created
+        else
+          render json: todo.errors, status: :unprocessable_entity
+        end
+    end
+    
+    def show
+        todo = Todo.where(id: params.require(:id), user_id: $user_id)
+
+        if todo.count != 0 
+          render json: {todo: todo[0], items: Item.where(todo_id: params.require(:id))}
+        else
+          head :not_found
+        end
+    end
+
+
+    private 
+
     def authenticate_user
       # Authorization: Bearer <token>
       token, _options = token_and_options(request)
@@ -25,11 +45,19 @@ class TodoController < ApplicationController
     rescue ActiveRecord::RecordNotFound, JWT::DecodeError
       render status: :unauthorized
     end
-  
+
     def limit
       [
         params.fetch(:limit, MAX_PAGINATION_LIMIT).to_i,
         MAX_PAGINATION_LIMIT
       ].min
+    end
+
+    def todo_params
+        params.require(:todo).permit(:title, :description)
+    end
+
+    def todo_does_not_exist(e)
+      render json: {error: e.message }, status: :unprocessable_entity
     end
 end
