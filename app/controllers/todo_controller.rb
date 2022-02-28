@@ -34,6 +34,15 @@ class TodoController < ApplicationController
         end
     end
 
+    def update
+        todo = Todo.where(id: params.require(:id), user_id: $user_id)[0]
+    
+        if todo.update todo_params
+          render json: todo, status: :ok
+        else
+          render json: todo.errors, status: :unprocessable_entity
+        end
+    end
 
 
 
