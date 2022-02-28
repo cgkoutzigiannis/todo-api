@@ -9,7 +9,7 @@ class TodoController < ApplicationController
     rescue_from NoMethodError, with: :todo_does_not_exist
 
     def index
-      todos = Todo.where(user_id: $user_id).limit(limit)
+      todos = Todo.where(user_id: $user_id).limit(limit).offset(offset)
 
       render json: todos
     end
@@ -35,6 +35,8 @@ class TodoController < ApplicationController
     end
 
 
+
+
     private 
 
     def authenticate_user
@@ -50,7 +52,14 @@ class TodoController < ApplicationController
       [
         params.fetch(:limit, MAX_PAGINATION_LIMIT).to_i,
         MAX_PAGINATION_LIMIT
-      ].min
+      ].min #prevents from limit > 100
+    end
+
+    def offset
+        [
+          params.fetch(:limit, 0).to_i,
+          0
+        ].max #prevets from offset < 0
     end
 
     def todo_params
