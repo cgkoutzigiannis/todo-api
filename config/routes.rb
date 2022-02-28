@@ -1,10 +1,10 @@
 Rails.application.routes.draw do
-  resources :todos do
-    get '/items', to: 'items#show'
-    put '/items', to: 'items#update'
-    delete '/items', to: 'items#destroy'
-    post '/items', to: 'items#create'
-  end
+  resources :todos 
+  get 'todos/:id/items', to: 'items#show'
+  put 'todos/:id/items', to: 'items#update'
+  delete 'todos/:id/items', to: 'items#destroy'
+  post 'todos/:id/items', to: 'items#create'
+  
   post 'signup', to: 'auth#signup'
   post 'auth/login'
     
