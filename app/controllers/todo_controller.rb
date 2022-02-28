@@ -44,7 +44,11 @@ class TodoController < ApplicationController
         end
     end
 
-
+    def destroy
+        Todo.where(id: params.require(:id), user_id: $user_id)[0].destroy!
+    
+        head :ok
+    end
 
     private 
 
