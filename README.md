@@ -1,24 +1,41 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Below you will find screenshots using [httpie](https://httpie.io/) for each endpoint in our API.
 
-Things you may want to cover:
+## Signup
+http POST http://localhost:3000/signup Content-Type:application/json username=usrnm password:psswrd
+![Signup](/images/signup.png)
 
-* Ruby version
+## Login
+http POST http://localhost:3000/auth/login Content-Type:application/json username=chris password=12345
+![Login](/images/auth_login.png)
 
-* System dependencies
+## Add a new todo list
+http POST http://localhost:3000/todos title="Todo List" description="My Todo List" -A bearer -a eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyfQ.SYqaEbJe79I6WUqEmVLURl8PgHi4g66r5w_lkyehtxU
+![Add a new todo list](/images/add_todo.png)
 
-* Configuration
+## Get a todo list
+http GET http://localhost:3000/todos -A bearer -a eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyfQ.SYqaEbJe79I6WUqEmVLURl8PgHi4g66r5w_lkyehtxU
+![Get a todo list](/images/get_todo.png)
 
-* Database creation
+## Get a specific todo list
+http GET http://localhost:3000/todos/1 -A bearer -a eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyfQ.SYqaEbJe79I6WUqEmVLURl8PgHi4g66r5w_lkyehtxU
+![Get a specifc todo list](/images/get_specific_todo.png)
 
-* Database initialization
+## Delete a specific todo and it's items:
+http DELETE http://localhost:3000/todos/1 -A bearer -a eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyfQ.SYqaEbJe79I6WUqEmVLURl8PgHi4g66r5w_lkyehtxU
+![Get a todo list and it's item.](/images/delete_todo.png)
 
-* How to run the test suite
+## Get a specific item
+http GET http://localhost:3000/todos/2/items item_id=1 -A bearer -a eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.YvpeoTwNNC78GlPrVKCGbqvtjFDl_kTBcGjbY_gaQxA
+![Get a todo list item](/images/get_item.png)
 
-* Services (job queues, cache servers, search engines, etc.)
+## Update a specific item
+http PUT http://localhost:3000/todos/2/items -A bearer -a eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.YvpeoTwNNC78GlPrVKCGbqvtjFDl_kTBcGjbY_gaQxA < ~/test.json
+![Update a todo list item](/images/update_item.png)
+The data we used for this command were:
+![Update JSON data](/images/update_data.png)
 
-* Deployment instructions
-
-* ...
+## Delete a specific item
+http DELETE http://localhost:3000/todos/2/items item_id=1 -A bearer -a eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.YvpeoTwNNC78GlPrVKCGbqvtjFDl_kTBcGjbY_gaQxA
+![Delete a todo list](/images/delete_todo.png)
