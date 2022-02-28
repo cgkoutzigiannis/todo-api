@@ -88,9 +88,6 @@ describe 'Athentication', type: :request do
             post '/auth/login', params: { username: 'wrong_username', password: user.password }
 
             expect(response).to have_http_status(:unauthorized)
-            expect(JSON.parse(response.body)).to eq({
-                'error' => "undefined method `authenticate' for nil:NilClass\n\n        raise AuthenticationError unless user.authenticate(params.require(:password))\n                                             ^^^^^^^^^^^^^"
-            })
         end
     end
 end

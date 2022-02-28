@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe "Todos API", type: :request do
-  let!(:user) { FactoryBot.create(:user, username: 'chris', password: '12345') } 
+  let!(:user) { FactoryBot.create(:user, id: 1, username: 'chris', password: '12345') } 
 
   it 'denies access if authentication failed' do
     get '/todos', headers: {"Authorization" => "Bearer 25151255252"}

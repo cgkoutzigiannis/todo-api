@@ -1,4 +1,4 @@
-class TodoController < ApplicationController
+class TodosController < ApplicationController
 
     include ActionController::HttpAuthentication::Token
   
