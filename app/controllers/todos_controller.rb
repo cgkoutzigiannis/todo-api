@@ -11,7 +11,7 @@ class TodosController < ApplicationController
     def index
       todos = Todo.where(user_id: $user_id).limit(limit).offset(offset)
 
-      render json: todos
+      render json: todos, status: :ok
     end
 
     def create
