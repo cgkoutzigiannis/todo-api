@@ -43,4 +43,54 @@ describe 'Athentication', type: :request do
             expect(User.count).to eq(0)
         end
     end
+
+    describe 'POST /login' do
+
+        let!(:user) { FactoryBot.create(:user, id: 1, username: 'chris', password: '12345') }
+
+        it 'authenticates a user' do
+            post '/auth/login', params: { username: user.username, password: user.password }
+
+            expect(response).to have_http_status(:created)
+            expect( JSON.parse(response.body) ).to eq({
+                "token" => "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.YvpeoTwNNC78GlPrVKCGbqvtjFDl_kTBcGjbY_gaQxA"
+            })
+        end
+
+        it 'returns error when username is missing' do
+            post '/auth/login', params: { password: user.password }
+
+            expect(response).to have_http_status(:unprocessable_entity)
+            expect( JSON.parse(response.body) ).to eq({
+                'error' => "param is missing or the value is empty: username"
+            })
+        end
+
+        it 'returns error when password is missing' do
+            post '/auth/login', params: { username: user.username }
+
+            expect(response).to have_http_status(:unprocessable_entity)
+            expect(JSON.parse(response.body)).to eq({
+                'error' => "param is missing or the value is empty: password"
+            })
+        end
+
+        it 'returns error when password is wrong' do
+            post '/auth/login', params: { username: user.username, password: "wrong_password" }
+
+            expect(response).to have_http_status(:unauthorized)
+            expect(JSON.parse(response.body)).to eq({
+                'error' => "AuthController::AuthenticationError"
+            })
+        end
+
+        it 'returns error when username is wrong' do
+            post '/auth/login', params: { username: 'wrong_username', password: user.password }
+
+            expect(response).to have_http_status(:unauthorized)
+            expect(JSON.parse(response.body)).to eq({
+                'error' => "undefined method `authenticate' for nil:NilClass\n\n        raise AuthenticationError unless user.authenticate(params.require(:password))\n                                             ^^^^^^^^^^^^^"
+            })
+        end
+    end
 end
