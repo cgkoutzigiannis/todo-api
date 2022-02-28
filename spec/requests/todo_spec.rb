@@ -52,7 +52,7 @@ describe "Todos API", type: :request do
   end
 
   describe 'GET /todos/:id' do
-    let!(:todo) { FactoryBot.create(:todo, title: 'My first Todo', description: 'Testing first todo', user_id: user.id) }
+    let!(:todo) { FactoryBot.create(:todo, id: 1, title: 'My first Todo', description: 'Testing first todo', user_id: user.id) }
 
     it 'returns todo with the specified id' do 
         get '/todos/1', headers: {"Authorization" => "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.YvpeoTwNNC78GlPrVKCGbqvtjFDl_kTBcGjbY_gaQxA"}
@@ -64,6 +64,36 @@ describe "Todos API", type: :request do
         get '/todos/100', headers: {"Authorization" => "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.YvpeoTwNNC78GlPrVKCGbqvtjFDl_kTBcGjbY_gaQxA"}
 
         expect(response).to have_http_status(:not_found)
+    end
+  end
+
+  describe 'PUT /todos/:id' do    
+    let!(:todo) { FactoryBot.create(:todo, id:1, title: 'My first Todo', description: 'Testing first todo', user_id: user.id) }
+
+    it 'updates a todo' do
+        put '/todos/1', 
+        params: { 
+            todo: {
+                title: 'My Test Todo List',
+                description: 'Just a todo list for testing'
+            }
+        },
+        headers: {"Authorization" => "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.YvpeoTwNNC78GlPrVKCGbqvtjFDl_kTBcGjbY_gaQxA"}
+
+        expect(response).to have_http_status(:ok)
+    end
+
+  end
+
+  describe 'DELETE /todos/:id' do
+    let!(:todo) { FactoryBot.create(:todo, id:1, title: 'My first Todo', description: 'Testing first todo', user_id: user.id) }
+
+    it 'deletes todo with given id' do
+        expect{
+            delete '/todos/1', headers: {"Authorization" => "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.YvpeoTwNNC78GlPrVKCGbqvtjFDl_kTBcGjbY_gaQxA"}
+        }.to change {Todo.count}.from(1).to(0)
+    
+        expect(response).to have_http_status(:ok)
     end
   end
 
