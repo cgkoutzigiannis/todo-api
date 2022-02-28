@@ -10,9 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_02_28_021714) do
+ActiveRecord::Schema[7.0].define(version: 2022_02_28_181434) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "items", force: :cascade do |t|
+    t.string "content"
+    t.boolean "status"
+    t.bigint "todo_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["todo_id"], name: "index_items_on_todo_id"
+  end
 
   create_table "todos", force: :cascade do |t|
     t.string "title"
@@ -31,5 +40,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_02_28_021714) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "items", "todos"
   add_foreign_key "todos", "users"
 end
