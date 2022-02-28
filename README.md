@@ -33,7 +33,7 @@ http GET http://localhost:3000/todos/2/items item_id=1 -A bearer -a eyJhbGciOiJI
 ## Update a specific item
 http PUT http://localhost:3000/todos/2/items -A bearer -a eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.YvpeoTwNNC78GlPrVKCGbqvtjFDl_kTBcGjbY_gaQxA < ~/test.json
 ![Update a todo list item](/images/update_item.png)
-The data we used for this command were:
+The data we used for this command were:<br>
 ![Update JSON data](/images/update_data.png)
 
 ## Delete a specific item
