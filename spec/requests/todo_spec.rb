@@ -3,6 +3,12 @@ require 'rails_helper'
 describe "Todos API", type: :request do
   let!(:user) { FactoryBot.create(:user, username: 'chris', password: '12345') } 
 
+  it 'denies access if authentication failed' do
+    get '/todos', headers: {"Authorization" => "Bearer 25151255252"}
+
+    expect(response).to have_http_status(:unauthorized)
+  end
+
   describe 'GET /todos' do
     let!(:todo) { FactoryBot.create(:todo, title: 'My first Todo', description: 'Testing first todo', user_id: user.id) }
 
@@ -14,5 +20,5 @@ describe "Todos API", type: :request do
     end 
   end
 
-  
+
 end
