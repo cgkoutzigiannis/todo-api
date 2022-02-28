@@ -17,6 +17,8 @@
 default: &default
   adapter: postgresql
   encoding: unicode
+  username: postgres
+  password: Ch10280613
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
@@ -82,5 +84,4 @@ test:
 production:
   <<: *default
   database: todo_api_production
-  username: todo_api
-  password: <%= ENV["TODO_API_DATABASE_PASSWORD"] %>
+  #password: <%= ENV["TODO_API_DATABASE_PASSWORD"] %>
