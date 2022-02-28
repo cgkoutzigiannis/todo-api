@@ -1,0 +1,314 @@
+openapi: 3.0.0
+info:
+  title: Todo Lists API
+  description: A todo list API
+  contact:
+    name: TodoAPI
+  version: 1.0.0
+servers:
+- url: https://glacial-beyond-37506.herokuapp.com/
+paths:
+  /signup:
+    description: Sign Up Resource
+    post:
+      description: Send credentials to sign up
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/signup_body'
+      responses:
+        "201":
+          description: Signed Up Successfully
+        "422":
+          description: Sign Up Failed
+  /auth/login:
+    description: Log In Resource
+    post:
+      description: Send credentials to log in
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/auth_login_body'
+      responses:
+        "201":
+          description: Loged In Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_201'
+        "401":
+          description: Authentication Failed
+  /todos:
+    description: Todos Resource
+    get:
+      description: List all Todos
+      responses:
+        "200":
+          description: Todos Loaded
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200'
+      security:
+      - bearerAuth: []
+    post:
+      description: Add new Todo List
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/todos_body'
+      responses:
+        "201":
+          description: Todo List Added Successfully
+        "422":
+          description: Process Failed
+      security:
+      - bearerAuth: []
+  /todos/{id}:
+    description: Todo Resource
+    get:
+      description: Get a Todo
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          example: 1
+      responses:
+        "201":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_201_1'
+        "404":
+          description: Todo Not Found
+      security:
+      - bearerAuth: []
+    put:
+      description: Update a Todo
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/todos_id_body'
+      responses:
+        "201":
+          description: Success
+        "411":
+          description: Failed
+      security:
+      - bearerAuth: []
+    delete:
+      description: Delete a Todo
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          example: 1
+      responses:
+        "201":
+          description: Success
+        "411":
+          description: Failed
+      security:
+      - bearerAuth: []
+  /todos/{id}/items:
+    description: Item Resource
+    get:
+      description: Get an Item
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          example: 1
+      - name: item_id
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/item_id'
+      responses:
+        "201":
+          description: Success
+      security:
+      - bearerAuth: []
+    put:
+      description: Edit an Item
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/id_items_body'
+      responses:
+        "201":
+          description: Success
+      security:
+      - bearerAuth: []
+    delete:
+      description: Delete a Todo
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          example: 1
+      - name: item_id
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/item_id_1'
+      responses:
+        "201":
+          description: Success
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    item_id_1:
+      type: object
+      properties:
+        item_id:
+          type: integer
+          example: 2
+    id_items_body:
+      type: object
+      properties:
+        item_id:
+          type: integer
+          example: 2
+        item:
+          $ref: '#/components/schemas/todosiditems_item'
+    item_id:
+      type: object
+      properties:
+        item_id:
+          type: integer
+          example: 2
+    todosiditems_item:
+      type: object
+      properties:
+        content:
+          type: string
+          example: edited item
+        status:
+          type: boolean
+      example: null
+    todos_body:
+      type: object
+      properties:
+        title:
+          type: string
+          example: My Todo List
+        description:
+          type: string
+          example: My first todo list!
+    inline_response_201:
+      type: object
+      properties:
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.YvpeoTwNNC78GlPrVKCGbqvtjFDl_kTBcGjbY_gaQxA
+    todos_id_body:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Edited Todo List
+        description:
+          type: string
+          example: My updated todo list!
+    auth_login_body:
+      type: object
+      properties:
+        username:
+          type: string
+          example: Chris
+        password:
+          type: string
+          example: "12345"
+    inline_response_200:
+      properties:
+        title:
+          type: string
+          example: Todo
+        description:
+          type: string
+          example: My todo list
+        user_id:
+          type: integer
+          example: 1
+        created_at:
+          type: string
+        updated_at:
+          type: string
+    inline_response_201_1:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Todo
+        description:
+          type: string
+          example: My todo list
+        user_id:
+          type: integer
+          example: 1
+        created_at:
+          type: string
+        updated_at:
+          type: string
+    signup_body:
+      type: object
+      properties:
+        username:
+          type: string
+          example: Chris
+        password:
+          type: string
+          example: "12345"
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

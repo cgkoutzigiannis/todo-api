@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  mount Rswag::Ui::Engine => '/api-docs'
+  mount Rswag::Api::Engine => '/api-docs'
   resources :todos 
   get 'todos/:id/items', to: 'items#show'
   put 'todos/:id/items', to: 'items#update'
