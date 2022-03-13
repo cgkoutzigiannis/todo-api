@@ -18,7 +18,8 @@ class AuthController < ApplicationController
     end
 
     def login
-        raise AuthenticationError unless user.authenticate(params.require(:password))
+        key = SecureRandom.hex
+        raise AuthenticationError unless user.authenticate(params.require(:password), key)
         token = AuthenticationTokenService.call(user.id)
 
         render json: {token: token}, status: :created
